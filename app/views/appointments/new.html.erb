@@ -1,0 +1,16 @@
+<div class="wrapper h-100 text-light">
+  <div id="header" class="d-flex mx-3  align-items-center justify-content-between py-3">
+    <%= link_to appointments_path, class: "rounded-3 fs-4 back-btn" do%>
+      <i class="fa-solid fa-chevron-left"></i>
+    <% end %>
+    <h2 class="m-0">Appointment</h2>
+    <%= simple_form_for @appointment do |f|%>
+      <div class="text-center">
+        <%= f.input :photo, as: :file, input_html: { accept: "image/*", id: "photo-input", style: "display: none;" }, label: false %>
+        <label for="photo-input" id="photo-button">
+          <i class="fa-solid fa-camera-retro fa-xl"></i>
+        </label>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -9,6 +9,10 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
+  def create
+    raise
+  end
+
   def destroy
     @appointment = Appointment.find(params[:id])
     @appointment.destroy

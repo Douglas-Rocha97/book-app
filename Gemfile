@@ -73,3 +73,4 @@ gem 'font-awesome-sass', '~> 6.2.1'
 gem 'devise'
 gem 'ostruct'
 gem 'image_processing', '~> 1.2'
+gem "simple_form", github: "heartcombo/simple_form"
