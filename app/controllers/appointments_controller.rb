@@ -4,4 +4,11 @@ class AppointmentsController < ApplicationController
   def index
     @appointments = Appointment.all
   end
+
+  def destroy
+    @appointment = Appointment.find(params[:id])
+    @appointment.destroy
+
+    redirect_back(fallback_location: appointments_path, notice: "Appointment Deleted")
+  end
 end
