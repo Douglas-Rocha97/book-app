@@ -20,9 +20,9 @@
         <% @services.each do |service| %>
           <div class="service-item">
             <%= check_box_tag "appointment[selected_service_names][]", service.name, @appointment.selected_service_id&.include?(service.name), class: "tag-selector", id: "service_#{service.id}" %>
-            <%= label_tag "service_#{service.id}", class:"d-flex align-items-center flex-column " do %>
-              <span class="service-name"><%= service.name %></span>
-              <span class="service-price"><%= service.price %></span>
+            <%= label_tag "service_#{service.id}", class:"d-flex align-items-center flex-column" do %>
+              <span><%= service.name %></span>
+              <span><%= service.price %></span>
             <% end %>
           </div>
         <% end %>
@@ -30,9 +30,20 @@
 
       <%# ----------- professionals ----------- %>
       <h6>Pick you professional</h6>
+      <div >
+        <% @professionals.each do |professional| %>
+          <div class="w-25 d-flex align-items-center justify-content-center">
+            <%= f.radio_button :professional_id, professional.id, id: "professional_#{professional.id}", class: "form-check-input" %>
+            <%= f.label :professional_id, professional.name, for: "professional_#{professional.id}", class: "d-flex flex-column align-items-center" do%>
+              <span><%= image_tag professional.photo, class: "professional-img rounded-circle" %></span>
+              <span><%= professional.name %></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
     </div>
 
 
-  <%= f.submit "Let's Cut!" , class: "mx-2 py-3 bg-warning rounded-5 text-center fs-3 position-fixed appointment-btn" %>
+    <%= f.submit "Let's Cut!" , class: "mx-2 py-3 bg-warning rounded-5 text-center fs-3 position-fixed appointment-btn" %>
   <% end %>
 </div>
