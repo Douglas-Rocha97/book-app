@@ -7,6 +7,8 @@ class AppointmentsController < ApplicationController
 
   def new
     @appointment = Appointment.new
+    @services = Service.all
+    @professionals = Professional.all
   end
 
   def create

@@ -1,16 +1,38 @@
 <div class="wrapper h-100 text-light">
-  <div id="header" class="d-flex mx-3  align-items-center justify-content-between py-3">
-    <%= link_to appointments_path, class: "rounded-3 fs-4 back-btn" do%>
-      <i class="fa-solid fa-chevron-left"></i>
-    <% end %>
-    <h2 class="m-0">Appointment</h2>
-    <%= simple_form_for @appointment do |f|%>
+  <%= simple_form_for @appointment do |f|%>
+    <div id="header" class="d-flex mx-3  align-items-center justify-content-between py-3">
+      <%= link_to appointments_path, class: "rounded-3 fs-4 back-btn" do%>
+        <i class="fa-solid fa-chevron-left"></i>
+      <% end %>
+      <h2 class="m-0">Appointment</h2>
       <div class="text-center">
         <%= f.input :photo, as: :file, input_html: { accept: "image/*", id: "photo-input", style: "display: none;" }, label: false %>
         <label for="photo-input" id="photo-button">
           <i class="fa-solid fa-camera-retro fa-xl"></i>
         </label>
       </div>
-    <% end %>
-  </div>
+    </div>
+    <%#--------- Services ---------%>
+    <div class="mx-3">
+    <%# ----------- Services ----------- %>
+    <h6>Pick Your services</h6>
+      <div class="d-flex align-items-center gap-3 overflow-auto mb-3">
+        <% @services.each do |service| %>
+          <div class="service-item">
+            <%= check_box_tag "appointment[selected_service_names][]", service.name, @appointment.selected_service_id&.include?(service.name), class: "tag-selector", id: "service_#{service.id}" %>
+            <%= label_tag "service_#{service.id}", class:"d-flex align-items-center flex-column " do %>
+              <span class="service-name"><%= service.name %></span>
+              <span class="service-price"><%= service.price %></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# ----------- professionals ----------- %>
+      <h6>Pick you professional</h6>
+    </div>
+
+
+  <%= f.submit "Let's Cut!" , class: "mx-2 py-3 bg-warning rounded-5 text-center fs-3 position-fixed appointment-btn" %>
+  <% end %>
 </div>
