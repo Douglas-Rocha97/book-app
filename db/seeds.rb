@@ -9,6 +9,7 @@
 #   end
 puts "Cleaning data base..."
  Appointment.destroy_all
+ ProfessionalService.destroy_all
  Service.destroy_all
  Professional.destroy_all
  User.destroy_all
@@ -97,7 +98,7 @@ prof3 = Professional.create!(
   date: Date.today
 )
 
-prof2.photo.attach(
+prof3.photo.attach(
   io: File.open(Rails.root.join("app/assets/images/userSeed.jpg")),
   filename: "userSeed.jpg",
   content_type: "image/jpeg"
