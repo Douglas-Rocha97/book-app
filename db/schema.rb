@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_30_031109) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_15_083009) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,6 +55,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_30_031109) do
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
+  create_table "professional_services", force: :cascade do |t|
+    t.bigint "professional_id", null: false
+    t.bigint "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["professional_id"], name: "index_professional_services_on_professional_id"
+    t.index ["service_id"], name: "index_professional_services_on_service_id"
+  end
+
   create_table "professionals", force: :cascade do |t|
     t.string "name"
     t.time "start_at"
@@ -95,5 +104,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_30_031109) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "appointments", "professionals"
   add_foreign_key "appointments", "users"
+  add_foreign_key "professional_services", "professionals"
+  add_foreign_key "professional_services", "services"
   add_foreign_key "services", "professionals"
 end
