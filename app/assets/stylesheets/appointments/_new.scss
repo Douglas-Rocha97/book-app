@@ -43,10 +43,10 @@
   transition: all 0.2s ease-in-out;
 }
 
-.professional-selector:hover + label img {
-  border: 2px solid #FFC107;
-  box-shadow: 0 0 15px 5px rgba(255, 193, 7, 0.6);
+.professional-selector:disabled + label img {
+  opacity: 0.2;
 }
+
 
 .professional-selector:checked + label img {
   border: 2px solid #FFC107;

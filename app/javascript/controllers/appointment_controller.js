@@ -2,30 +2,40 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="appointment"
 export default class extends Controller {
-  static targets = ["service", "professional"]
+  static targets = ["checkbox","professionalLabel"]
 
   connect() {
     console.log("appointment controller here");
-
-    this.updateProfessionals()
+    // console.log(this.professionalLabelTargets)
   }
 
-  updateProfessionals() {
-     const selectedServices = this.serviceTargets
-    .filter(cb => cb.checked)
-    .map(cb => cb.value)
+  checkProfessional(e) {
 
-  console.log("Serviços selecionados:", selectedServices)
+     // 1. Collect all selected services
+     const selectedServices = this.checkboxTargets
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => {
+        const label = checkbox.nextElementSibling;
+        return label.querySelector("span").innerText;
+      });
 
-  this.professionalTargets.forEach(radio => {
-    const label = this.element.querySelector(`label[for="${radio.id}"]`)
-    const services = label.dataset.services?.split(",") || []
+    // 2. Update all professionals based on selected services
+    this.professionalLabelTargets.forEach((label) => {
+      const professionalServices = label.dataset.services.split(',');
+      const radioId = label.getAttribute('for');
+      const radio = document.getElementById(radioId);
 
-    console.log(`Profissional ${radio.id} oferece:`, services)
+      const hasService = selectedServices.some(service =>
+        professionalServices.includes(service)
+      );
 
-    const isMatch = selectedServices.every(service => services.includes(service))
-    radio.disabled = !isMatch
-    })
+      radio.disabled = !hasService;
+
+      if (!hasService) {
+        radio.checked = false;
+      }
+    });
 
   }
+
 }
