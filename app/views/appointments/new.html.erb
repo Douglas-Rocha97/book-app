@@ -43,6 +43,13 @@
         </div>
     </div>
 
+    <div class="m-3 mb-5">
+    <h6>Pick a date</h6>
+      <%= month_calendar do |date| %>
+        <%= date.day %>
+      <% end %>
+    </div>
+
 
     <%= f.submit "Let's Cut!" , class: "mx-2 py-3 bg-warning rounded-5 text-center fs-3 position-fixed appointment-btn" %>
   <% end %>

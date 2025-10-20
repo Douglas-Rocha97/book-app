@@ -55,3 +55,8 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+.calendar-heading {
+  display: flex;
+  justify-content: space-between;
+}
