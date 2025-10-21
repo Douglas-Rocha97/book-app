@@ -4,11 +4,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["checkbox","professionalLabel"]
 
-  connect() {
-    console.log("appointment controller here");
-    // console.log(this.professionalLabelTargets)
-  }
-
   checkProfessional(e) {
 
      // 1. Collect all selected services

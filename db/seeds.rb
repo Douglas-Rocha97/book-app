@@ -146,6 +146,7 @@ appointment1 = Appointment.create!(
   date: Date.today + 1,
   start_time: "10:00",
   finish_time: "10:45",
+  service_ids: [service1.id, service2.id]
 )
 
 appointment1.goal_image.attach(

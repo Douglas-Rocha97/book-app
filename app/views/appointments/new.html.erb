@@ -17,15 +17,15 @@
       <%# ----------- Services ----------- %>
       <h6>Pick Your services</h6>
         <div class="d-flex align-items-center gap-2 overflow-auto hide-scrollbar mb-3" >
-          <% @services.each do |service| %>
-            <div class="service-item">
-              <%= check_box_tag "appointment[selected_service_names][]", service.name, @appointment.selected_service_id&.include?(service.name), class: "tag-selector", id: "service_#{service.id}", data: { appointment_target: "checkbox", action: "click->appointment#checkProfessional" } %>
-              <%= label_tag "service_#{service.id}", class:"d-flex align-items-center flex-column" do %>
-                <span class="text-nowrap"><%= service.name %></span>
-                <span><%= service.price %></span>
-              <% end %>
-            </div>
-          <% end %>
+            <%= f.collection_check_boxes :service_ids, @services, :id, :name do |cb| %>
+              <div class="service-item">
+                <%= cb.check_box class: "tag-selector", data: { appointment_target: "checkbox", action: "click->appointment#checkProfessional" } %>
+                <%= cb.label class: "d-flex flex-column align-items-center" do %>
+                  <span class="text-nowrap"><%= cb.text %></span>
+                  <span><%= @services.find(cb.value.to_i).price %></span>
+                <% end %>
+              </div>
+            <% end %>
         </div>
 
         <%# ----------- professionals ----------- %>
@@ -33,11 +33,9 @@
         <div class="d-flex gap-2" >
           <% @professionals.each do |professional| %>
             <div class="w-25 d-flex align-items-center justify-content-center">
-              <%= f.radio_button :professional_id, professional.id, id: "professional_#{professional.id}", class: "professional-selector", disabled: true %>
-              <%= f.label :professional_id, professional.name, for: "professional_#{professional.id}", class: "d-flex flex-column align-items-center", data: { services: professional.services.map(&:name).join(','), appointment_target: "professionalLabel" } do%>
-                <span><%= image_tag professional.photo, class: "professional-img rounded-circle" %></span>
-                <span><%= professional.name %></span>
-              <% end %>
+              <%= f.radio_button :professional_id, professional.id, id: "professional_#{professional.id}", disabled: true %>
+
+              <%= f.label :professional_id, professional.name, for: "professional_#{professional.id}", data: { appointment_target: "professionalLabel", services: professional.services.pluck(:id).join(',') }%>
             </div>
           <% end %>
         </div>
