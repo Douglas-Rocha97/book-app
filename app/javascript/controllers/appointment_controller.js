@@ -49,7 +49,8 @@ export default class extends Controller {
   }
 
   selectDate(e) {
-    const selectedDay = e.target
+    // console.log(e.target);
+    const selectedDay = e.target.closest("td")
     if (selectedDay.classList.contains("past")||selectedDay.classList.contains("wday-0"))return
 
     this.calendarTarget.querySelectorAll("td").forEach(day => {
@@ -57,6 +58,11 @@ export default class extends Controller {
     })
 
     selectedDay.classList.add("selected")
+    const date = selectedDay.firstElementChild.dataset.date
+    console.log(date);
+    const input = document.getElementById("selected-date")
+    input.value = date
+
   }
 
 

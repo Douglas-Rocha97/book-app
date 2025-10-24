@@ -47,11 +47,15 @@
 
     <div class="m-3 mb-5">
       <h6>Pick a date</h6>
+
       <div data-action="click->appointment#selectDate" data-appointment-target="calendar">
         <%= month_calendar do |date|  %>
-          <%= date.day %>
+          <div data-date=<%= date %>>
+            <%= date.day %>
+          </div>
         <% end %>
       </div>
+      <%= f.hidden_field :date, id: "selected-date" %>
       <div data-appointment-target="timesList">
 
       </div>
