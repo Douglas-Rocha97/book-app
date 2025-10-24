@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "pages#index"
 
+
   #  resources :scans, only: [ :new, :create, :show ] do
   #   resources :recipes, only: [ :new, :create, :show ]
   # end

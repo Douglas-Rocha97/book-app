@@ -47,9 +47,14 @@
 
     <div class="m-3 mb-5">
       <h6>Pick a date</h6>
-      <%= month_calendar do |date| %>
-        <%= date.day %>
-      <% end %>
+      <div data-action="click->appointment#selectDate" data-appointment-target="calendar">
+        <%= month_calendar do |date|  %>
+          <%= date.day %>
+        <% end %>
+      </div>
+      <div data-appointment-target="timesList">
+
+      </div>
     </div>
 
 

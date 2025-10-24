@@ -21,4 +21,5 @@ class AppointmentsController < ApplicationController
 
     redirect_back(fallback_location: appointments_path, notice: "Appointment Deleted")
   end
+
 end

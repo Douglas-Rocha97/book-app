@@ -2,13 +2,13 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="appointment"
 export default class extends Controller {
-  static targets = ["checkbox","professionalLabel", "professionalsList"]
+  static targets = ["checkbox","professionalLabel", "professionalsList", "calendar", "timesList"]
 
   connect() {
 
   }
 
-  checkProfessional(e) {
+  checkProfessional() {
 
      // 1. Collect all service_ids if checked (array of strings)
     const selectedServiceIds = this.checkboxTargets
@@ -47,5 +47,17 @@ export default class extends Controller {
     professionals.forEach(prof => this.professionalsListTarget.appendChild(prof));
 
   }
+
+  selectDate(e) {
+    const selectedDay = e.target
+    if (selectedDay.classList.contains("past")||selectedDay.classList.contains("wday-0"))return
+
+    this.calendarTarget.querySelectorAll("td").forEach(day => {
+      day.classList.remove("selected")
+    })
+
+    selectedDay.classList.add("selected")
+  }
+
 
 }

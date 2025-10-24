@@ -60,3 +60,41 @@
   display: flex;
   justify-content: space-between;
 }
+
+.selected {
+  border: 2px solid #FFC107 !important;
+}
+
+.simple-calendar {
+  .day {
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .day.disabled {
+    color: #bbb;
+    background-color: #f8f8f8;
+    pointer-events: none;
+  }
+
+
+  .wday-0 {background-color: #DDD}
+  .wday-1 {}
+  .wday-2 {}
+  .wday-3 {}
+  .wday-4 {}
+  .wday-5 {}
+  .wday-6 {}
+
+  .today {}
+  .past {background-color: #DDD}
+  .future {}
+
+  .start-date {}
+
+  .prev-month {}
+  .next-month { }
+  .current-month {}
+
+  .has-events {}
+}
