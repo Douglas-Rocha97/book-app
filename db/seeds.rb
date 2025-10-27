@@ -108,7 +108,7 @@ puts "creating services..."
 service1 = Service.create!(
   name:"haircut",
   price: 3800,
-  duration: 45
+  duration: 60
 )
 
 service2 = Service.create!(
@@ -126,7 +126,7 @@ service3 = Service.create!(
 service4 = Service.create!(
   name:"Eyebrow shaping",
   price: 1800,
-  duration: 20
+  duration: 30
 )
 
 puts "Associating services to professionals..."
