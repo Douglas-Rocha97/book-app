@@ -61,7 +61,9 @@ body{
 }
 
 .appointment-btn{
-  bottom: 3rem;
+  position: sticky;
+  bottom: 1rem;
   width: calc(100% - 16px);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 10;
 }

@@ -9,14 +9,5 @@ class Appointment < ApplicationRecord
 
 
   validates :date, :start_time, :finish_time, presence: true
-  validate :must_have_at_least_one_service
-
-  private
-
-  def must_have_at_least_one_service
-    if services.empty?
-      errors.add(:services, "You need to select at least one service")
-    end
-  end
 
 end

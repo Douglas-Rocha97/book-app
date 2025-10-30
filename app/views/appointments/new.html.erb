@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <div class="m-3 mb-5">
+    <div class="m-3 mb-3">
       <h6>Pick a date</h6>
       <span class="text-danger" data-appointment-target = "dateTimeError"></span>
       <div data-action="click->appointment#selectDate" data-appointment-target="calendar">
@@ -61,12 +61,12 @@
         <% end %>
       </div>
       <%= f.hidden_field :date, id: "selected-date", data: { appointment_target: "date"} %>
-      <div class="d-flex align-items-center gap-2 overflow-auto hide-scrollbar mb-5" data-appointment-target="timesList">
+      <div class="d-flex align-items-center gap-2 overflow-auto hide-scrollbar mb-3" data-appointment-target="timesList">
       </div>
         <%= f.hidden_field :start_time, id: "selected-time", data: { appointment_target: "time"} %>
     </div>
 
 
-    <%= f.submit "Let's Cut!" , class: "mx-2 py-3 bg-warning rounded-5 text-center fs-3 position-fixed appointment-btn" %>
+    <%= f.submit "Let's Cut!" , class: "mx-2 py-3 bg-warning rounded-5 text-center fs-3 appointment-btn" %>
   <% end %>
 </div>

@@ -144,26 +144,32 @@ export default class extends Controller {
   }
 
   validateForm(e){
-    e.preventDefault()
-     const selectedService = this.checkboxTargets.filter(cb=> cb.checked)
-     if(selectedService.length === 0) {
+    let isValid = true
+    const selectedService = this.checkboxTargets.filter(cb=> cb.checked)
+    if(selectedService.length === 0) {
       this.serviceErrorTarget.innerText = "Please select at least one service."
-     }
+      isValid = false
+    }
 
-     const selectedProfessional = Array.from(this.professionalsListTarget.querySelectorAll("input[type='radio']:enabled"))
+    const selectedProfessional = Array.from(this.professionalsListTarget.querySelectorAll("input[type='radio']:enabled"))
     .find(radio => radio.checked);
 
-     if(!selectedProfessional) {
+    if(!selectedProfessional) {
       this.professionalErrorTarget.innerText="Please select at least one professional."
-     }
+      isValid = false
+    }
 
-     const date = this.dateTarget.value
-     const time = this.timeTarget.value
+    const date = this.dateTarget.value
+    const time = this.timeTarget.value
 
     if(!date||!time) {
       this.dateTimeErrorTarget.innerText = "Please select a date and time"
+      isValid = false
     }
 
+    if(!isValid) {
+      e.preventDefault()
+    }
   }
 
 }
