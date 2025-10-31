@@ -12,8 +12,8 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-
     @appointment_params = appointment_params
+
 
     professional = Professional.find(@appointment_params[:professional_id])
     services_ids = @appointment_params[:service_ids].reject(&:blank?)
@@ -29,7 +29,7 @@ class AppointmentsController < ApplicationController
 
     @appointment = Appointment.new(
       user: User.last,
-      professional_id: professional,
+      professional: professional,
       date: date,
       start_time: start_at,
       finish_time: finish_at
@@ -39,8 +39,9 @@ class AppointmentsController < ApplicationController
       @appointment.services << services
       redirect_to appointments_path, notice: "Appointment created!"
     else
-      # @services = Service.all
-      # @professionals = Professional.all
+      puts @appointment.errors.full_messages
+      @services = Service.all
+      @professionals = Professional.all
       render :new, status: :unprocessable_entity
     end
   end
@@ -78,6 +79,6 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.require(:appointment).permit(:professional_id, :date, :start_time, service_ids: [])
+    params.require(:appointment).permit(:professional_id, :date, :start_time, :photo, service_ids: [])
   end
 end

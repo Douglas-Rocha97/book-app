@@ -19,14 +19,16 @@
     </div>
   </div>
   <%# ----------- Appointments --------- %>
-  <div class="mt-5 mx-3">
+  <div class="my-5 mx-3 ">
     <h2 class="">Your appointments</h2>
     <% @appointments.each do |appointment|  %>
       <div class="appointment-card rounded-5  d-flex position-relative">
         <% if appointment.goal_image.attached? %>
-          <%= image_tag appointment.goal_image, class: "h-100 appointment-img rounded-5" %>
+          <%= image_tag appointment.goal_image, class: "h-100 rounded-5" %>
         <% else %>
-          <p>No image yet</p>
+          <div class="bg-danger avatar-w d-flex align-items-center justify-content-center rounded-5 bg-dark">
+            <%= image_tag "user.png", alt: "no avatar image", class: "h-50"%>
+          </div>
         <% end %>
         <div class="d-flex flex-column align-items-center mx-auto">
           <div class="d-flex flex-column align-items-center mt-2">
