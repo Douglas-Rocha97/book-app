@@ -1,0 +1,32 @@
+ <div class="h-100 wrapper d-flex align-items-center justify-content-center">
+  <div class="text-black w-75 p-3 rounded-4 bg-warning" >
+    <h2 class="text-center log-fs">Log in</h2>
+
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="form-inputs">
+        <%= f.input :email,
+                    required: false,
+                    autofocus: true,
+                    label: false,
+                    input_html: { autocomplete: "email", placeholder: "Email", class: "rounded-pill fs-5 p-2 w-100 my-3" } %>
+        <%= f.input :password,
+                    required: false,
+                    label: false,
+                    input_html: { autocomplete: "current-password", placeholder: "Password", class: "rounded-pill fs-5 p-2 w-100 mb-3" } %>
+        <% if devise_mapping.rememberable? %>
+          <div class="d-flex align-items-center justify-content-center gap-1">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, "Remember me"%>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit, "Log in", class: "bg-dark text-light w-100 fs-4 rounded-pill" %>
+      </div>
+    <% end %>
+    <div class="d-flex flex-column align-items-center">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+ </div>
