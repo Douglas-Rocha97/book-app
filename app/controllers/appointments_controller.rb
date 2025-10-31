@@ -12,8 +12,8 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    @appointment_params = appointment_params
 
+    @appointment_params = appointment_params
 
     professional = Professional.find(@appointment_params[:professional_id])
     services_ids = @appointment_params[:service_ids].reject(&:blank?)
@@ -34,6 +34,10 @@ class AppointmentsController < ApplicationController
       start_time: start_at,
       finish_time: finish_at
     )
+
+    if @appointment_params[:photo].present?
+      @appointment.goal_image.attach(@appointment_params[:photo])
+    end
 
     if @appointment.save
       @appointment.services << services
