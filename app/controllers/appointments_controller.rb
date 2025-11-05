@@ -28,7 +28,7 @@ class AppointmentsController < ApplicationController
     finish_at = start_at + total_duration.minutes
 
     @appointment = Appointment.new(
-      user: User.last,
+      user: current_user,
       professional: professional,
       date: date,
       start_time: start_at,
