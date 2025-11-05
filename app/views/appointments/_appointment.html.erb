@@ -1,0 +1,28 @@
+<div id="<%= dom_id(appointment) %>"
+  class="appointment-card rounded-5  d-flex position-relative">
+        <% if appointment.goal_image.attached? %>
+          <%= image_tag appointment.goal_image, class: "h-100 rounded-5 w-50" %>
+        <% else %>
+          <div class="bg-danger avatar-w d-flex align-items-center justify-content-center rounded-5 bg-dark">
+            <%= image_tag "user.png", alt: "no avatar image", class: "w-50"%>
+          </div>
+        <% end %>
+        <div class="d-flex flex-column align-items-center mx-auto">
+          <div class="d-flex flex-column align-items-center mt-2">
+            <h6>Date & Time</h6>
+            <p class="mb-1"><%= appointment.date.strftime("%Y/%m/%d (%a)") %></p>
+            <p class="mb-2"><%= appointment.start_time.strftime("%H:%M")%>~<%=appointment.finish_time.strftime("%H:%M") %></p>
+          </div>
+          <div class="d-flex flex-column align-items-center mx-auto">
+            <h6>Services</h6>
+            <% appointment.services.each do |service| %>
+              <p class="m-0"><%= service.name %></p>
+            <% end %>
+          </div>
+        </div>
+        <%= link_to appointment_path(appointment),
+          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+          class: "text-decoration-none appointment-cancel rounded-circle bg-danger position-absolute d-flex align-items-center justify-content-center" do%>
+          <i class="fa-solid fa-xmark"></i>
+        <% end %>
+      </div>

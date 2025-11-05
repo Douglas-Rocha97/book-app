@@ -2,9 +2,6 @@
 # https://dribbble.com/shots/25508922-Barber-Booking-Mobile-App
 class AppointmentsController < ApplicationController
   def index
-    current_user.appointments.where("date < ? OR (date = ? AND finish_time < ?)",
-                                  Date.today, Date.today, Time.current.strftime("%H:%M:%S")).destroy_all
-
     @appointments = current_user.appointments
   end
 
@@ -54,10 +51,13 @@ class AppointmentsController < ApplicationController
   end
 
   def destroy
-    @appointment = Appointment.find(params[:id])
+    @appointment = current_user.appointments.find(params[:id])
     @appointment.destroy
 
-    redirect_back(fallback_location: appointments_path)
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to appointments_path }
+    end
   end
 
   def available_times
