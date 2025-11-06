@@ -106,17 +106,70 @@ export default class extends Controller {
     this.loadAvailableTimes(selectedDate, this.selectedProfessionalId)
   }
 
-  async loadAvailableTimes(date, professionalId){
+  async loadAvailableTimes(date, professionalId) {
     try {
-      const response = await fetch(`/appointments/available_times?professional_id=${professionalId}&date=${date}`)
-      const data = await response.json()
+      // coleta services selecionados (filtra vazios e null)
+      const selectedServiceIds = this.checkboxTargets
+        .filter(cb => cb.checked)
+        .map(cb => String(cb.value).trim())
+        .filter(id => id !== "" && id !== "null" && id !== "undefined");
+
+      if (selectedServiceIds.length === 0) {
+        this.timesListTarget.innerHTML = "<p class='text-muted'>Please select at least one service.</p>";
+        return;
+      }
+
+      // monta query de forma robusta
+      const query = new URLSearchParams({
+        professional_id: professionalId,
+        date: date
+      });
+      selectedServiceIds.forEach(id => query.append("service_ids[]", id));
+
+      const url = `/appointments/available_times?${query.toString()}`;
+      // console.log("REAL URL BEING FETCHED:", url);
+
+      const response = await fetch(url, {
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        // mostra erro mais amigável no UI
+        console.error("Server returned not ok:", response.status, response.statusText);
+        this.timesListTarget.innerHTML = `<p class="text-danger">No available times (server returned ${response.status}).</p>`;
+        return;
+      }
+
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        // se veio HTML, loga e mostra a mensagem em vez de quebrar o JSON.parse
+        const text = await response.text();
+        console.error("Expected JSON but got:", text);
+        this.timesListTarget.innerHTML = "<p class='text-danger'>Unexpected server response. Check logs.</p>";
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.message) {
+        this.timesListTarget.innerHTML = `<p class='text-light'>${data.message}</p>`;
+        return;
+      }
+
+      // data deve ser array de strings ["09:00", "09:30"]
+      if (!Array.isArray(data) || data.length === 0) {
+        this.timesListTarget.innerHTML = "<p class='text-muted'>No available times for this date.</p>";
+        return;
+      }
 
       this.renderTimes(data);
-    }catch(error) {
-      console.error("error fetching available time:", error);
-
+    } catch (error) {
+      console.error("error fetching available times:", error);
+      this.timesListTarget.innerHTML = "<p class='text-danger'>Error loading times.</p>";
     }
-  };
+  }
 
   renderTimes(times) {
     this.timesListTarget.innerHTML = ''

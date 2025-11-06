@@ -12,7 +12,6 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-
     @appointment_params = appointment_params
 
     professional = Professional.find(@appointment_params[:professional_id])
@@ -61,26 +60,97 @@ class AppointmentsController < ApplicationController
   end
 
   def available_times
-    professional = Professional.find(params[:professional_id])
-    date = Date.parse(params[:date])
-
-    start_time = professional.start_at
-    finish_time = professional.finish_at
-
-    all_times = []
-    current = start_time
-    while current < finish_time
-      all_times << current.strftime("%H:%M")
-      current += 30.minutes
+    begin
+      professional = Professional.find(params[:professional_id])
+    rescue ActiveRecord::RecordNotFound
+      return render json: { error: "Professional not found" }, status: :not_found
     end
 
-    booked_times = Appointment
-    .where(professional: professional, date: date)
-    .pluck(:start_time)
+    begin
+      date = Date.parse(params[:date].to_s)
+    rescue ArgumentError
+      return render json: { error: "Invalid date" }, status: :bad_request
+    end
 
-    available = all_times - booked_times
+    # garante que service_ids virá como array e remove strings vazias/nulos
+    service_ids = Array(params[:service_ids]).map(&:to_s).reject(&:blank?).map(&:to_i)
+    if service_ids.empty?
+      return render json: { error: "No services provided" }, status: :bad_request
+    end
 
-    render json: available
+    # soma as durações dos serviços selecionados (assume coluna `duration` em minutos)
+    total_duration_minutes = Service.where(id: service_ids).sum(:duration)
+    total_duration = total_duration_minutes.minutes
+
+    # Constrói start_time e finish_time no fuso da aplicação, com a data escolhida
+    # Tratamos professional.start_at podendo ser Time, String ou ActiveSupport::TimeWithZone
+    start_at_value = professional.start_at
+    finish_at_value = professional.finish_at
+
+    start_time =
+      if start_at_value.respond_to?(:hour)
+        # se for Time/TimeWithZone/DateTime
+        date.in_time_zone.change(hour: start_at_value.hour, min: start_at_value.min)
+      else
+        # se for "09:00" string
+        Time.zone.parse("#{date} #{start_at_value}")
+      end
+
+    finish_time =
+      if finish_at_value.respond_to?(:hour)
+        date.in_time_zone.change(hour: finish_at_value.hour, min: finish_at_value.min)
+      else
+        Time.zone.parse("#{date} #{finish_at_value}")
+      end
+
+    # Gera slots de 30 minutos (ajuste se quiser outro intervalo)
+    slot_interval = 30.minutes
+    all_slots = []
+    current = start_time
+
+    # criamos slots que cabem inteiramente no expediente (current + total_duration <= finish_time)
+    while (current + total_duration) <= finish_time
+      all_slots << current
+      current += slot_interval
+      # safety guard infinito (não precisa em geral)
+      break if all_slots.size > 1000
+    end
+
+    # busca appointments do dia e profissional com includes(:services)
+    appointments = Appointment.includes(:services).where(professional: professional, date: date)
+
+    # remove slots que conflitam com qualquer appointment existente
+    appointments.each do |appt|
+      # se appt.start_time for Time completo (com data), usamos ele; se for só hora, construímos com date
+      appt_start =
+        if appt.start_time.respond_to?(:to_time) && appt.start_time.to_time.year > 2000
+          appt.start_time.in_time_zone
+        else
+          Time.zone.parse("#{date} #{appt.start_time.strftime("%H:%M") rescue appt.start_time}")
+        end
+
+      appt_duration_minutes = appt.services.sum(:duration)
+      appt_end = appt_start + appt_duration_minutes.minutes
+
+      all_slots.reject! do |slot|
+        slot_end = slot + total_duration
+        # overlap test: [slot, slot_end) x [appt_start, appt_end)
+        (slot < appt_end) && (slot_end > appt_start)
+      end
+    end
+
+    # remove horários que já passaram se a data for hoje
+    if date == Date.current
+      now = Time.current
+      all_slots.reject! { |slot| slot <= now }
+    end
+
+    if all_slots.empty?
+      return render json: { message: "No available times. Please choose another date." }, status: :ok
+    end
+
+    # formata em strings "HH:MM" e retorna JSON
+    render json: all_slots.map { |t| t.strftime("%H:%M") }
   end
 
   private
