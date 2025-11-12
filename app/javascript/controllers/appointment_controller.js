@@ -82,13 +82,14 @@ export default class extends Controller {
     }
 
     const selectedDay = e.target.closest("td")
+
     if (!selectedDay || selectedDay.classList.contains("past")||selectedDay.classList.contains("wday-0"))return
 
-    this.calendarTarget.querySelectorAll("td").forEach(day => {
+    this.calendarTarget.querySelectorAll(".day-selector").forEach(day => {
       day.classList.remove("selected")
     })
 
-    selectedDay.classList.add("selected")
+    selectedDay.querySelector(".day-selector").classList.add("selected")
     this.dateTimeErrorTarget.innerText = ""
 
     const dateDiv = selectedDay.querySelector("[data-date]")

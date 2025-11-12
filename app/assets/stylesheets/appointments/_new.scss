@@ -48,8 +48,8 @@
 }
 
 .professional-selector:checked + label img {
-  border: 2px solid #FFC107;
-  box-shadow: 0 0 15px 5px rgba(255, 193, 7, 0.6);
+  border: 1px solid #FFC107;
+  box-shadow: 0 0 10px 5px rgba(255, 193, 7, 0.321);
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -62,19 +62,5 @@
 }
 
 .selected {
-  border: 2px solid #FFC107 !important;
-}
-
-.simple-calendar {
-  .day {
-    cursor: pointer;
-    transition: 0.2s;
-  }
-
-  .day.disabled {
-    color: #bbb;
-    background-color: #f8f8f8;
-    pointer-events: none;
-  }
-
+  box-shadow: rgb(246, 185, 2) 0 0 0 9999px inset !important;
 }

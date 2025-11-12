@@ -16,7 +16,7 @@ export default class extends Controller {
     .then(html => this.listTarget.innerHTML = html
     )
 
-    this.calendarTarget.querySelectorAll("td").forEach(day=>{
+    this.calendarTarget.querySelectorAll(".day-selector").forEach(day=>{
       day.classList.remove("selected")
     })
 
@@ -25,7 +25,7 @@ export default class extends Controller {
     if (!selectedDay || selectedDay.classList.contains("past") || selectedDay.classList.contains("wday-0")){
       return
     }else{
-      selectedDay.classList.add("selected")
+      selectedDay.querySelector(".day-selector").classList.add("selected")
     }
   }
 }

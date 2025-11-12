@@ -55,7 +55,7 @@
       <span class="text-danger" data-appointment-target = "dateTimeError"></span>
       <div data-action="click->appointment#selectDate" data-appointment-target="calendar">
         <%= month_calendar do |date|  %>
-          <div data-date=<%= date %>>
+          <div data-date=<%= date %> class="day-selector">
             <%= date.day %>
           </div>
         <% end %>
