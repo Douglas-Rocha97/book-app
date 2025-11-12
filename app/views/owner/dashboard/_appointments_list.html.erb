@@ -1,0 +1,27 @@
+
+<% if appointments.any? %>
+  <% appointments.each do |appointment| %>
+    <div class="mx-2 bg-warning text-dark p-2 rounded-3 my-2">
+      <div class="">
+        <p><strong>costumer name:</strong> <%= appointment.user.name %></p>
+          <p><strong>staff name:</strong><%= appointment.professional.name %></p>
+          <p><strong>date:</strong> <%= appointment.date %></p>
+          <p><strong>start time:</strong> <%= appointment.start_time.strftime("%H:%M") %></p>
+          <p><strong>finish_time time:</strong> <%= appointment.finish_time.strftime("%H:%M") %></p>
+          <div class="">
+            <strong>Services:</strong>
+            <% appointment.services.each do |service| %>
+              <p class="m-0"><%= service.name.capitalize %> - <%= service.price %> </p>
+            <% end %>
+            <strong>Price:</strong>
+            <%= appointment.services.sum(:price) %>
+          </div>
+
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="text-center">
+   No appointments for this day yet!
+  </div>
+<% end %>

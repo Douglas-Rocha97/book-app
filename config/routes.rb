@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get "appointments/available_times", to: "appointments#available_times"
 
   namespace :owner do
-    get 'dashboard/index'
     get "dashboard", to: "dashboard#index"
+    get "dashboard/show_appointments", to: "dashboard#show_appointments"
   end
 end

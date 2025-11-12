@@ -6,6 +6,14 @@ class Owner::DashboardController < ApplicationController
     @appointments = Appointment.all
   end
 
+  def show_appointments
+
+    date = params[:date]
+    @appointments = Appointment.where(date: date)
+
+    render partial: "appointments_list", locals: { appointments: @appointments }
+  end
+
   private
 
   def require_owner!

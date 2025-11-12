@@ -1,8 +1,8 @@
-<div class="wrapper h-100 text-light">
+<div class="wrapper h-100 text-light" data-controller="dashboard">
   <h1 class="text-center p-0">Appointments Calendar</h1>
-  <div data-action="click->dashboard#showAppointments" class="mx-2">
+  <div class="mx-2" data-dashboard-target="calendar">
     <%= month_calendar do |date| %>
-      <div data-date=<%= date %>>
+      <div data-date=<%= date %> data-action="click->dashboard#showAppointments" class="day-selector">
         <%= date.day %>
       </div>
     <% end %>
