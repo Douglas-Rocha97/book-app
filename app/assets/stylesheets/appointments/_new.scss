@@ -19,6 +19,14 @@
   margin-bottom: 0.4rem;
 }
 
+.service-item {
+  min-width: 8rem;
+}
+
+.service-item .tag-selector + label {
+  padding: 0.3rem 0;
+}
+
 .tag-selector:checked + label {
   background-color: #FFC107;
   color: #232323;

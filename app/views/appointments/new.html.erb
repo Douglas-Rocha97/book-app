@@ -22,7 +22,8 @@
                 <%= cb.check_box class: "tag-selector", data: { appointment_target: "checkbox", action: "change->appointment#checkProfessional" } %>
                 <%= cb.label class: "d-flex flex-column align-items-center" do %>
                   <span class="text-nowrap"><%= cb.text %></span>
-                  <span><%= @services.find(cb.value.to_i).price %></span>
+                  <span>¥<%= number_with_delimiter(@services.find(cb.value.to_i).price, delimiter: ".") %></span>
+
                 <% end %>
               </div>
             <% end %>
