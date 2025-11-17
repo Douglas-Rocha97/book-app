@@ -8,8 +8,45 @@ export default class extends Controller {
     ]
 
   connect() {
+    const startTime = "9:00"
+    const finishTime = "19:00"
+    const interval = 30
+
+      function generateSlots(start, end, intervalMin = 30) {
+        const slots = []
+
+        const base = new Date()
+
+        const startDate = new Date(base)
+        const endDate = new Date(base)
+
+        const [sh, sm]= start.split(":").map(Number)
+        const [eh, em]= end.split(":").map(Number)
+
+        startDate.setHours(sh, sm, 0, 0)
+        endDate.setHours(eh, em, 0, 0)
+
+        while(startDate < endDate) {
+          slots.push(startDate.toTimeString().slice(0, 5))
+          startDate.setMinutes(startDate.getMinutes() + intervalMin)
+        }
+        return slots
+      }
+
+      const slots = generateSlots(startTime, finishTime, interval)
+      console.log(slots);
+      slots.forEach((slot => {
+        const div = document.createElement('div')
+        const span = document.createElement("span")
+        span.innerText = slot
+        span.className = "hours"
+        div.appendChild(span)
+        this.timesListTarget.appendChild(div)
+      }))
+
 
   }
+
 
   checkProfessional(e) {
     this.serviceErrorTarget.innerText = ""

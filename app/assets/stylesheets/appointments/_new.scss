@@ -72,3 +72,16 @@
 .selected {
   box-shadow: rgb(246, 185, 2) 0 0 0 9999px inset !important;
 }
+
+.hours {
+  font-size: 1rem;
+  border-radius: 50rem;
+  padding: 0.5rem 1rem;
+  background-color: #626262;
+  color: #FFF;
+  border: 1px solid #e5e5e5;
+  margin-right: 0.6rem;
+  margin-bottom: 0.4rem;
+  display: block;
+  opacity: 0.2;
+}
