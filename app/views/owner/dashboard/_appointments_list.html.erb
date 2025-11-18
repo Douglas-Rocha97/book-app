@@ -1,23 +1,53 @@
 
 <% if appointments.any? %>
   <% appointments.each do |appointment| %>
-    <div class="mx-2 bg-warning text-dark p-2 rounded-3 my-2">
-      <div class="">
-        <p><strong>costumer name:</strong> <%= appointment.user.name %></p>
-          <p><strong>staff name:</strong><%= appointment.professional.name %></p>
-          <p><strong>date:</strong> <%= appointment.date %></p>
-          <p><strong>start time:</strong> <%= appointment.start_time.strftime("%H:%M") %></p>
-          <p><strong>finish_time time:</strong> <%= appointment.finish_time.strftime("%H:%M") %></p>
-          <div class="">
-            <strong>Services:</strong>
-            <% appointment.services.each do |service| %>
-              <p class="m-0"><%= service.name.capitalize %> - <%= service.price %> </p>
-            <% end %>
-            <strong>Price:</strong>
-            <%= appointment.services.sum(:price) %>
+    <div class="mx-3 bg-owner rounded-3 my-3 p-3 text-white ">
+      <div class="text-center mb-2">
+        <span class="dashboard-border pb-2 fw-bold">
+          <%= appointment.start_time.strftime("%H:%M") %> - <%= appointment.finish_time.strftime("%H:%M") %>
+        <span>
+      </div>
+
+      <div class="d-flex gap-2 align-items-center dashboard-border pb-2">
+         <%#  ------- Appointment Upper section ---------%>
+
+        <div class="dashboard-img rounded-circle">
+          <% if appointment.goal_image.attached? %>
+            <%= image_tag appointment.goal_image, class: "rounded-circle dashboard-img " %>
+          <% else %>
+            <div class="dashboard-img d-flex align-items-center justify-content-center rounded-circle bg-dark">
+              <%= image_tag "user.png", alt: "no avatar image", class: "w-50"%>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="d-flex flex-column w-100">
+          <span class="mt-2 text-start">costumer: <%= appointment.user.name %></span>
+          <span class=" text-end">with: <%= appointment.professional.name %></span>
+        </div>
+
+        <div>
+          <%= image_tag appointment.professional.photo, class: "rounded-circle dashboard-img mt-4" %>
+        </div>
+      </div>
+        <%#  -------/ Upper section ---------%>
+
+        <%#  ------- Appointment Lower section ---------%>
+        <div class="p-3">
+
+          <div class="d-flex flex-nowrap justify-content-between">
+
+            <div class="d-flex flex-column">
+              <h6 class="m-0">Services</h6>
+              <% appointment.services.each do |service| %>
+                <span class="ps-2"><%= service.name.capitalize %> - <%= service.price %> </span>
+              <% end %>
+            </div>
           </div>
 
-      </div>
+        </div>
+
+
     </div>
   <% end %>
 <% else %>
