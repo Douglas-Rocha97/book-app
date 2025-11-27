@@ -14,14 +14,14 @@
     </div>
     <%#--------- Services ---------%>
     <div class="mx-3">
-      <h6>Pick Your services</h6>
+      <h6>Choose Your services</h6>
         <span class="text-danger" data-appointment-target = "serviceError"></span>
-        <div class="d-flex align-items-center gap-2 overflow-auto hide-scrollbar mb-3" >
+        <div class="d-flex align-items-center gap-1 overflow-auto hide-scrollbar mb-3" >
             <%= f.collection_check_boxes :service_ids, @services, :id, :name do |cb| %>
               <div class="service-item">
                 <%= cb.check_box class: "tag-selector", data: { appointment_target: "checkbox", action: "change->appointment#checkProfessional" } %>
                 <%= cb.label class: "d-flex flex-column align-items-center" do %>
-                  <span class="text-nowrap"><%= cb.text %></span>
+                  <span class="text-nowrap mx-2"><%= cb.text %></span>
                   <span>¥<%= number_with_delimiter(@services.find(cb.value.to_i).price, delimiter: ".") %></span>
                 <% end %>
               </div>
@@ -29,7 +29,7 @@
         </div>
 
         <%# ----------- professionals ----------- %>
-        <h6>Pick you professional</h6>
+        <h6>Choose your Barber</h6>
         <span class="text-danger" data-appointment-target = "professionalError"></span>
         <div class="d-flex gap-2" data-appointment-target="professionalsList" >
           <% @professionals.each do |professional| %>
@@ -51,7 +51,7 @@
     </div>
 
     <div class="m-3 mb-3">
-      <h6>Pick a date</h6>
+      <h6>Select a date</h6>
       <span class="text-danger" data-appointment-target = "dateTimeError"></span>
       <div data-action="click->appointment#selectDate" data-appointment-target="calendar">
         <%= month_calendar do |date|  %>

@@ -24,27 +24,30 @@ user1 = User.create!(
   role: :owner,
   number: "080-3509-2343"
 )
-
+user1.photo.purge if user1.photo.attached?
 user1.photo.attach(
   io: File.open(Rails.root.join("app/assets/images/userSeed.jpg")),
   filename: "userSeed.jpg",
   content_type: "image/jpeg"
 )
 
+
 user2 = User.create!(
   name: "Giovanni",
   gender: "male",
   email: "giovanni@example.com",
   password: "123456",
-  role: :staff,
+  role: :user,
   number: "090-3509-9999"
 )
 
+user2.photo.purge if user1.photo.attached?
 user2.photo.attach(
-  io: File.open(Rails.root.join("app/assets/images/userSeed.jpg")),
-  filename: "userSeed.jpg",
+  io: File.open(Rails.root.join("app/assets/images/gio-barber.jpg")),
+  filename: "gio-barber.jpg",
   content_type: "image/jpeg"
 )
+
 
 user3 = User.create!(
   name: "Diego",
@@ -55,9 +58,10 @@ user3 = User.create!(
   number: "070-3509-0099"
 )
 
+user3.photo.purge if user1.photo.attached?
 user3.photo.attach(
-  io: File.open(Rails.root.join("app/assets/images/userSeed.jpg")),
-  filename: "userSeed.jpg",
+  io: File.open(Rails.root.join("app/assets/images/diegoUser.jpg")),
+  filename: "diegoUser.jpg",
   content_type: "image/jpeg"
 )
 
@@ -71,13 +75,13 @@ prof1 = Professional.create!(
 )
 
 prof1.photo.attach(
-  io: File.open(Rails.root.join("app/assets/images/userSeed.jpg")),
-  filename: "userSeed.jpg",
+  io: File.open(Rails.root.join("app/assets/images/gio-barber.jpg")),
+  filename: "gio-barber.jpg",
   content_type: "image/jpeg"
 )
 
 prof2 = Professional.create!(
-  name: "Willian",
+  name: "Paul",
   role: "barber",
   start_at: "09:00",
   finish_at: "18:00",
@@ -85,13 +89,13 @@ prof2 = Professional.create!(
 )
 
 prof2.photo.attach(
-  io: File.open(Rails.root.join("app/assets/images/userSeed.jpg")),
-  filename: "userSeed.jpg",
+  io: File.open(Rails.root.join("app/assets/images/Paul.jpg")),
+  filename: "Paul.jpg",
   content_type: "image/jpeg"
 )
 
 prof3 = Professional.create!(
-  name: "Ingrid",
+  name: "Katarina",
   role: "barber",
   start_at: "09:00",
   finish_at: "18:00",
@@ -99,8 +103,8 @@ prof3 = Professional.create!(
 )
 
 prof3.photo.attach(
-  io: File.open(Rails.root.join("app/assets/images/userSeed.jpg")),
-  filename: "userSeed.jpg",
+  io: File.open(Rails.root.join("app/assets/images/w-barber.jpg")),
+  filename: "w-barber.jpg",
   content_type: "image/jpeg"
 )
 

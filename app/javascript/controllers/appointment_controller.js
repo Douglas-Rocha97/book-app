@@ -1,71 +1,78 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="appointment"
 export default class extends Controller {
-  static targets = ["checkbox", "date", "professionalLabel",
-     "professionalsList", "calendar", "timesList", "time",
-     "serviceError", "professionalError", "dateTimeError"
-    ]
+  static targets = [
+    "checkbox",
+    "date",
+    "professionalLabel",
+    "professionalsList",
+    "calendar",
+    "timesList",
+    "time",
+    "serviceError",
+    "professionalError",
+    "dateTimeError",
+  ];
 
   connect() {
-    const startTime = "9:00"
-    const finishTime = "19:00"
-    const interval = 30
+    const startTime = "9:00";
+    const finishTime = "19:00";
+    const interval = 30;
 
-      function generateSlots(start, end, intervalMin = 30) {
-        const slots = []
+    function generateSlots(start, end, intervalMin = 30) {
+      const slots = [];
 
-        const base = new Date()
+      const base = new Date();
 
-        const startDate = new Date(base)
-        const endDate = new Date(base)
+      const startDate = new Date(base);
+      const endDate = new Date(base);
 
-        const [sh, sm]= start.split(":").map(Number)
-        const [eh, em]= end.split(":").map(Number)
+      const [sh, sm] = start.split(":").map(Number);
+      const [eh, em] = end.split(":").map(Number);
 
-        startDate.setHours(sh, sm, 0, 0)
-        endDate.setHours(eh, em, 0, 0)
+      startDate.setHours(sh, sm, 0, 0);
+      endDate.setHours(eh, em, 0, 0);
 
-        while(startDate < endDate) {
-          slots.push(startDate.toTimeString().slice(0, 5))
-          startDate.setMinutes(startDate.getMinutes() + intervalMin)
-        }
-        return slots
+      while (startDate < endDate) {
+        slots.push(startDate.toTimeString().slice(0, 5));
+        startDate.setMinutes(startDate.getMinutes() + intervalMin);
       }
-
-      const slots = generateSlots(startTime, finishTime, interval)
-      console.log(slots);
-      slots.forEach((slot => {
-        const div = document.createElement('div')
-        const span = document.createElement("span")
-        span.innerText = slot
-        span.className = "hours"
-        div.appendChild(span)
-        this.timesListTarget.appendChild(div)
-      }))
-
-
-  }
-
-
-  checkProfessional(e) {
-    this.serviceErrorTarget.innerText = ""
-    if (!e.target.checked) {
-      const professionalsList = this.professionalsListTarget.querySelectorAll("input")
-      professionalsList.forEach(professional => professional.checked = false)
+      return slots;
     }
 
-     // 1. Collect all service_ids if checked (array of strings)
+    const slots = generateSlots(startTime, finishTime, interval);
+    slots.forEach((slot) => {
+      const div = document.createElement("div");
+      const span = document.createElement("span");
+      span.innerText = slot;
+      span.className = "hours";
+      div.appendChild(span);
+      this.timesListTarget.appendChild(div);
+    });
+  }
+
+  checkProfessional(e) {
+    this.serviceErrorTarget.innerText = "";
+    if (!e.target.checked) {
+      const professionalsList =
+        this.professionalsListTarget.querySelectorAll("input");
+      professionalsList.forEach(
+        (professional) => (professional.checked = false)
+      );
+    }
+
+    // 1. Collect all service_ids if checked (array of strings)
     const selectedServiceIds = this.checkboxTargets
-      .filter(cb=> cb.checked)
-      .map(cb=> cb.value);
+      .filter((cb) => cb.checked)
+      .map((cb) => cb.value);
 
     // 2. Update all professionals based on selected services
     this.professionalLabelTargets.forEach((label) => {
-      const professionalServiceIds = label.dataset.services.split(',');// array of strings
-      const radio = document.getElementById(label.getAttribute('for'))
+      const professionalServiceIds = label.dataset.services.split(","); // array of strings
+      const radio = document.getElementById(label.getAttribute("for"));
 
-      const hasService = selectedServiceIds.every(service =>
+      const hasService = selectedServiceIds.every((service) =>
         professionalServiceIds.includes(service)
       );
 
@@ -86,96 +93,110 @@ export default class extends Controller {
       const radioB = document.getElementById(labelB.getAttribute("for"));
 
       // Enabled professionals come first
-      return (radioA.disabled === radioB.disabled) ? 0 : (radioA.disabled ? 1 : -1);
+      return radioA.disabled === radioB.disabled ? 0 : radioA.disabled ? 1 : -1;
     });
 
     // 4. Re-append sorted professionals to the container
-    professionals.forEach(prof => this.professionalsListTarget.appendChild(prof));
+    professionals.forEach((prof) =>
+      this.professionalsListTarget.appendChild(prof)
+    );
 
-    const selectedRadio = this.professionalsListTarget.querySelector("input[type='radio']:checked");
-      if (!selectedRadio || selectedRadio.disabled) {
+    const selectedRadio = this.professionalsListTarget.querySelector(
+      "input[type='radio']:checked"
+    );
+    if (!selectedRadio || selectedRadio.disabled) {
       this.calendarEnabled = false;
-      this.dateTarget.value = ""
-      this.calendarTarget.querySelectorAll("td").forEach(day => {
-      day.classList.remove("selected")
-    })
+      this.dateTarget.value = "";
+      this.calendarTarget.querySelectorAll("td").forEach((day) => {
+        day.classList.remove("selected");
+      });
     }
   }
 
   enableCalendar(e) {
-    this.professionalErrorTarget.innerText=""
-    const selectedRadio = e.target
+    this.professionalErrorTarget.innerText = "";
+    const selectedRadio = e.target;
 
-    if (!selectedRadio.checked) this.calendarEnabled = false
+    if (!selectedRadio.checked) this.calendarEnabled = false;
 
-    this.selectedProfessionalId = selectedRadio.value
-    this.calendarEnabled = true
+    this.selectedProfessionalId = selectedRadio.value;
+    this.calendarEnabled = true;
   }
 
   selectDate(e) {
     if (!this.calendarEnabled) {
       console.warn("pick a professional");
-      return
+      return;
     }
 
-    const selectedDay = e.target.closest("td")
+    const selectedDay = e.target.closest("td");
 
-    if (!selectedDay || selectedDay.classList.contains("past")||selectedDay.classList.contains("wday-0"))return
+    if (
+      !selectedDay ||
+      selectedDay.classList.contains("past") ||
+      selectedDay.classList.contains("wday-0")
+    )
+      return;
 
-    this.calendarTarget.querySelectorAll(".day-selector").forEach(day => {
-      day.classList.remove("selected")
-    })
+    this.calendarTarget.querySelectorAll(".day-selector").forEach((day) => {
+      day.classList.remove("selected");
+    });
 
-    selectedDay.querySelector(".day-selector").classList.add("selected")
-    this.dateTimeErrorTarget.innerText = ""
+    selectedDay.querySelector(".day-selector").classList.add("selected");
+    this.dateTimeErrorTarget.innerText = "";
 
-    const dateDiv = selectedDay.querySelector("[data-date]")
-    if (!dateDiv) return
+    const dateDiv = selectedDay.querySelector("[data-date]");
+    if (!dateDiv) return;
 
-    const selectedDate = dateDiv.dataset.date
-    const input = this.dateTarget
-    input.value = selectedDate
+    const selectedDate = dateDiv.dataset.date;
+    const input = this.dateTarget;
+    input.value = selectedDate;
 
     if (!this.selectedProfessionalId) {
       console.warn("pick a professional");
-      return
+      return;
     }
 
-    this.loadAvailableTimes(selectedDate, this.selectedProfessionalId)
+    this.loadAvailableTimes(selectedDate, this.selectedProfessionalId);
   }
 
   async loadAvailableTimes(date, professionalId) {
     try {
       // coleta services selecionados (filtra vazios e null)
       const selectedServiceIds = this.checkboxTargets
-        .filter(cb => cb.checked)
-        .map(cb => String(cb.value).trim())
-        .filter(id => id !== "" && id !== "null" && id !== "undefined");
+        .filter((cb) => cb.checked)
+        .map((cb) => String(cb.value).trim())
+        .filter((id) => id !== "" && id !== "null" && id !== "undefined");
 
       if (selectedServiceIds.length === 0) {
-        this.timesListTarget.innerHTML = "<p class='text-muted'>Please select at least one service.</p>";
+        this.timesListTarget.innerHTML =
+          "<p class='text-muted'>Please select at least one service.</p>";
         return;
       }
 
       // monta query de forma robusta
       const query = new URLSearchParams({
         professional_id: professionalId,
-        date: date
+        date: date,
       });
-      selectedServiceIds.forEach(id => query.append("service_ids[]", id));
+      selectedServiceIds.forEach((id) => query.append("service_ids[]", id));
 
       const url = `/appointments/available_times?${query.toString()}`;
       // console.log("REAL URL BEING FETCHED:", url);
 
       const response = await fetch(url, {
         headers: {
-          "Accept": "application/json"
-        }
+          Accept: "application/json",
+        },
       });
 
       if (!response.ok) {
         // mostra erro mais amigável no UI
-        console.error("Server returned not ok:", response.status, response.statusText);
+        console.error(
+          "Server returned not ok:",
+          response.status,
+          response.statusText
+        );
         this.timesListTarget.innerHTML = `<p class="text-danger">No available times (server returned ${response.status}).</p>`;
         return;
       }
@@ -185,7 +206,8 @@ export default class extends Controller {
         // se veio HTML, loga e mostra a mensagem em vez de quebrar o JSON.parse
         const text = await response.text();
         console.error("Expected JSON but got:", text);
-        this.timesListTarget.innerHTML = "<p class='text-danger'>Unexpected server response. Check logs.</p>";
+        this.timesListTarget.innerHTML =
+          "<p class='text-danger'>Unexpected server response. Check logs.</p>";
         return;
       }
 
@@ -198,69 +220,74 @@ export default class extends Controller {
 
       // data deve ser array de strings ["09:00", "09:30"]
       if (!Array.isArray(data) || data.length === 0) {
-        this.timesListTarget.innerHTML = "<p class='text-muted'>No available times for this date.</p>";
+        this.timesListTarget.innerHTML =
+          "<p class='text-muted'>No available times for this date.</p>";
         return;
       }
 
       this.renderTimes(data);
     } catch (error) {
       console.error("error fetching available times:", error);
-      this.timesListTarget.innerHTML = "<p class='text-danger'>Error loading times.</p>";
+      this.timesListTarget.innerHTML =
+        "<p class='text-danger'>Error loading times.</p>";
     }
   }
 
   renderTimes(times) {
-    this.timesListTarget.innerHTML = ''
-    times.forEach(time => {
-      const div = document.createElement('div')
-      const input = document.createElement("input")
-      input.type = "radio"
-      input.name = "appointment[start_time]"
-      input.dataset.time = time
-      input.id = time
-      input.classList = "tag-selector"
-      input.dataset.action = "change->appointment#selectTime"
-      const label = document.createElement("label")
-      label.htmlFor = time
-      label.innerText = time
-      div.appendChild(input)
-      div.appendChild(label)
-      this.timesListTarget.appendChild(div)
-    })
+    this.timesListTarget.innerHTML = "";
+    times.forEach((time) => {
+      const div = document.createElement("div");
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "appointment[start_time]";
+      input.dataset.time = time;
+      input.id = time;
+      input.classList = "tag-selector";
+      input.dataset.action = "change->appointment#selectTime";
+      const label = document.createElement("label");
+      label.htmlFor = time;
+      label.innerText = time;
+      div.appendChild(input);
+      div.appendChild(label);
+      this.timesListTarget.appendChild(div);
+    });
   }
 
   selectTime(e) {
-    const time = e.target.dataset.time
-    this.timeTarget.value = time
+    const time = e.target.dataset.time;
+    this.timeTarget.value = time;
   }
 
-  validateForm(e){
-    let isValid = true
-    const selectedService = this.checkboxTargets.filter(cb=> cb.checked)
-    if(selectedService.length === 0) {
-      this.serviceErrorTarget.innerText = "Please select at least one service."
-      isValid = false
+  validateForm(e) {
+    let isValid = true;
+    const selectedService = this.checkboxTargets.filter((cb) => cb.checked);
+    if (selectedService.length === 0) {
+      this.serviceErrorTarget.innerText = "Please select at least one service.";
+      isValid = false;
     }
 
-    const selectedProfessional = Array.from(this.professionalsListTarget.querySelectorAll("input[type='radio']:enabled"))
-    .find(radio => radio.checked);
+    const selectedProfessional = Array.from(
+      this.professionalsListTarget.querySelectorAll(
+        "input[type='radio']:enabled"
+      )
+    ).find((radio) => radio.checked);
 
-    if(!selectedProfessional) {
-      this.professionalErrorTarget.innerText="Please select at least one professional."
-      isValid = false
+    if (!selectedProfessional) {
+      this.professionalErrorTarget.innerText =
+        "Please select at least one professional.";
+      isValid = false;
     }
 
-    const date = this.dateTarget.value
-    const time = this.timeTarget.value
+    const date = this.dateTarget.value;
+    const time = this.timeTarget.value;
 
-    if(!date||!time) {
-      this.dateTimeErrorTarget.innerText = "Please select a date and time"
-      isValid = false
+    if (!date || !time) {
+      this.dateTimeErrorTarget.innerText = "Please select a date and time";
+      isValid = false;
     }
 
-    if(!isValid) {
-      e.preventDefault()
+    if (!isValid) {
+      e.preventDefault();
     }
   }
-
 }

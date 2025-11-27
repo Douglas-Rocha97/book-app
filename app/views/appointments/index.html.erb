@@ -1,7 +1,11 @@
- <div class="text-light position-relative">
+ <div class="text-light position-relative min-vh-100">
   <div class="bg-gray p-4 w-100 d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center gap-2">
-      <%= image_tag "userSeed.jpg", alt: "avatar image", class: "avatar-img rounded-circle"%>
+    <% if current_user.photo.attached?  %>
+      <%= image_tag current_user.photo, alt: "avatar image", class: "avatar-img rounded-circle" %>
+    <% else %>
+       <%= image_tag "user.png", alt: "avatar image", class: "avatar-img rounded-circle" %>
+    <% end %>
       <div class="d-flex flex-column">
         <p class="m-0 fs-greet">Welcome</p>
         <p class="m-0">Hey, <%= current_user.name %> 👋</p>

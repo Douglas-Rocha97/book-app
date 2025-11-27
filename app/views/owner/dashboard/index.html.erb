@@ -1,5 +1,10 @@
 <div class="wrapper text-light" data-controller="dashboard">
-  <h1 class="text-center py-2 fs-4 ">Appointments Calendar</h1>
+  <div class="d-flex align-items-center mx-2 justify-content-between">
+    <h1 class="text-center py-2 fs-4 d-inline">Appointments Calendar</h1>
+    <%= button_to destroy_user_session_path, method: :delete, class: "text-end btn text-white" do %>
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <% end %>
+  </div>
   <div class="mx-2" data-dashboard-target="calendar">
     <%= month_calendar do |date| %>
       <div data-date=<%= date %> data-action="click->dashboard#showAppointments" class="day-selector">

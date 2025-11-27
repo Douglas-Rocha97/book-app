@@ -13,7 +13,9 @@
 
         <div class="dashboard-img rounded-circle">
           <% if appointment.goal_image.attached? %>
-            <%= image_tag appointment.goal_image, class: "rounded-circle dashboard-img " %>
+            <%= image_tag appointment.goal_image, class: "rounded-circle dashboard-img border border-warning" %>
+          <% elsif appointment.user.photo.attached? %>
+            <%= image_tag appointment.user.photo, class: "rounded-circle dashboard-img" %>
           <% else %>
             <div class="dashboard-img d-flex align-items-center justify-content-center rounded-circle bg-dark">
               <%= image_tag "user.png", alt: "no avatar image", class: "w-50"%>
