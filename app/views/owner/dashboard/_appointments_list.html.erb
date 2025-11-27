@@ -33,18 +33,18 @@
         <%#  -------/ Upper section ---------%>
 
         <%#  ------- Appointment Lower section ---------%>
-        <div class="p-3">
-
-          <div class="d-flex flex-nowrap justify-content-between">
-
-            <div class="d-flex flex-column">
-              <h6 class="m-0">Services</h6>
-              <% appointment.services.each do |service| %>
-                <span class="ps-2"><%= service.name.capitalize %> - <%= service.price %> </span>
-              <% end %>
-            </div>
+        <div class="pt-3">
+            <div class="d-flex justify-content-center align items-center flex-column">
+              <h6 class="text-center">Services</h6>
+                <% appointment.services.each do |service| %>
+                  <div class="d-flex align-items-center">
+                    <span class="ps-2"><%= service.name.capitalize %></span>
+                    <div class="line mx-4"></div>
+                    <span> ¥<%= number_with_delimiter(service.price, delimiter: '.') %> </span>
           </div>
-
+                <% end %>
+                <p class="ps-2 mb-0 pt-2"><span class="fw-bold">Total:</span> ¥<%=number_with_delimiter(appointment.services.sum(:price), delimiter: '.')  %></p>
+            </div>
         </div>
 
 
