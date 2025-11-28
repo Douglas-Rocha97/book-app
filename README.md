@@ -62,9 +62,9 @@ douglas@example.com
 ▶️ Running the Project
 
 Run the Rails server:
-
+```bash
 rails s
-
+```
 
 Access the app at:
 http://localhost:3000
