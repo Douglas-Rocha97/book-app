@@ -1,9 +1,12 @@
 📖 Barber-Book
-The Barber-Book is a web application designed to make appointment scheduling easier for barbershops and their clients. Clients can quickly book services, while barbers and shop owners can view, organize, and keep track of all appointments through a calendar and date-based filters.
+
+The Barber-Book is a web application designed to make appointment scheduling easier for barbershops and their clients.
+Clients can quickly book services, while barbers and shop owners can view, organize, and keep track of all appointments through a calendar and date-based filters.
 
 This project was built mainly to learn and practice authorization logic, something I had not implemented in real projects before.
 
 🚀 Technologies Used
+
 Ruby on Rails
 
 PostgreSQL
@@ -13,9 +16,9 @@ JavaScript
 Bootstrap
 
 📦 Installation
-Follow the steps below to run the project locally:
 
-bash
+Follow the steps below to run the project locally:
+```bash
 # Clone the repository or fork it
 git clone <repository-link>
 
@@ -33,25 +36,35 @@ rails db:migrate
 
 # Seed the database with default data
 rails db:seed
+```
+
+
 👤 Seed Accounts
 User accounts (clients):
 
-diego@example.com | password: 123456
+diego@example.com
+ | password: 123456
 
-giovanni@example.com | password: 123456
+giovanni@example.com
+ | password: 123456
 
 Owner account (barber / admin):
 
-douglas@example.com | password: 123456
+douglas@example.com
+ | password: 123456
 
 ▶️ Running the Project
-Start the Rails server:
 
-bash
+Run the Rails server:
+
 rails s
-Then access the app at: http://localhost:3000
+
+
+Access the app at:
+http://localhost:3000
 
 📌 Features
+
 ✔️ Clients can book appointments
 
 ✔️ Staff and owners can track appointments by date
@@ -65,6 +78,7 @@ Then access the app at: http://localhost:3000
 ✔️ Simple and clean Bootstrap interface
 
 🎯 Learning Goals
+
 This project was created to practice:
 
 Authorization in Rails (role-based access control)
@@ -74,4 +88,9 @@ Model associations
 Permission management across different user roles
 
 👤 Author
-Douglas Rocha 🔗 LinkedIn 🌐 Portfolio
+
+Douglas Rocha
+
+LinkedIn: https://www.linkedin.com/in/douglas-rocha97/
+
+Portfolio: https://douglas-rocha97.github.io/
